@@ -1,40 +1,25 @@
 {
-  "name": "Ubuntu 20.04 DevContainer",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "args": {
-      "VARIANT": "ubuntu-20.04"
-    }
-  },
-  "features": {
-    "ghcr.io/devcontainers/features/sshd:1": {
-      "version": "latest"
+    "name": "Ubuntu 20.04 Dev Container",
+    "build": {
+        "dockerfile": "Dockerfile"
     },
-    "ghcr.io/devcontainers/features/common-utils:2": {},
-    "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.8",
-      "installTools": true
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            },
+            "extensions": [
+                // Add any VS Code extensions you want to be installed by default
+                // For example:
+                // "ms-python.python",
+                // "esbenp.prettier-vscode"
+            ]
+        }
     },
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "lts"
-    }
-  },
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-python.python",
-        "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint",
-        "streetsidesoftware.code-spell-checker"
-      ],
-      "settings": {
-        "python.pythonPath": "/usr/bin/python3",
-        "editor.formatOnSave": true
-      }
-    }
-  },
-  "forwardPorts": [3000, 8000, 22],
-  "postCreateCommand": "bash .devcontainer/post-create.sh",
-  "remoteUser": "vscode"
-}
+    "features": {
+        "ghcr.io/devcontainers/features/sshd:1": {
+            "version": "latest"
+        }
+    },
+    "remoteUser": "vscode"
+        }
