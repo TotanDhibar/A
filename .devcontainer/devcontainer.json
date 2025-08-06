@@ -1,25 +1,17 @@
-{
-    "name": "Ubuntu 20.04 Dev Container",
-    "build": {
-        "dockerfile": "Dockerfile"
-    },
-    "customizations": {
-        "vscode": {
-            "settings": {
-                "terminal.integrated.defaultProfile.linux": "bash"
-            },
-            "extensions": [
-                // Add any VS Code extensions you want to be installed by default
-                // For example:
-                // "ms-python.python",
-                // "esbenp.prettier-vscode"
-            ]
-        }
-    },
-    "features": {
-        "ghcr.io/devcontainers/features/sshd:1": {
-            "version": "latest"
-        }
-    },
-    "remoteUser": "vscode"
-        }
+{"name": "Ubuntu 20.04 Codespace",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "remoteUser": "vscode",
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "extensions": [
+    "ms-vscode.cpptools",
+    "ms-vscode.csharp",
+    "ms-python.python"
+  ],
+  "forwardPorts": [],
+  "postCreateCommand": "echo \"Welcome to your Ubuntu 20.04 Codespace!\""
+}
