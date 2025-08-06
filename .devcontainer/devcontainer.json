@@ -1,24 +1,16 @@
 {
-  "name": "Ubuntu 20.04 Codespace",
+  "name": "Ubuntu 20.04 Dev Container with SSH",
   "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
+    "dockerfile": "Dockerfile"
   },
-  "remoteUser": "vscode",
+  "features": {
+    "ghcr.io/devcontainers/features/sshd:1": {
+      "version": "latest"
+    }
+  },
+  "postCreateCommand": "sudo service ssh start",
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"
   },
-  "extensions": [
-    "ms-vscode.cpptools",
-    "ms-vscode.csharp",
-    "ms-python.python"
-  ],
-  "forwardPorts": [],
-  "mounts": [
-    "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent.sock,type=bind"
-  ],
-  "remoteEnv": {
-    "SSH_AUTH_SOCK": "/ssh-agent.sock"
-  },
-  "postCreateCommand": "echo \"Welcome to your Ubuntu 20.04 Codespace!\""
+  "extensions": []
 }
