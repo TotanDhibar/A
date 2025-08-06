@@ -1,5 +1,5 @@
 {
-  "name": "Ubuntu 20.04 Dev Container",
+  "name": "Ubuntu 20.04 DevContainer",
   "build": {
     "dockerfile": "Dockerfile",
     "args": {
@@ -7,9 +7,14 @@
     }
   },
   "features": {
+    "ghcr.io/devcontainers/features/sshd:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/common-utils:2": {},
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.8"
+      "version": "3.8",
+      "installTools": true
     },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"
@@ -20,11 +25,16 @@
       "extensions": [
         "ms-python.python",
         "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint"
-      ]
+        "dbaeumer.vscode-eslint",
+        "streetsidesoftware.code-spell-checker"
+      ],
+      "settings": {
+        "python.pythonPath": "/usr/bin/python3",
+        "editor.formatOnSave": true
+      }
     }
   },
-  "forwardPorts": [3000, 8000],
-  "postCreateCommand": "sudo apt-get update && sudo apt-get -y install --no-install-recommends build-essential",
+  "forwardPorts": [3000, 8000, 22],
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
   "remoteUser": "vscode"
-        }
+}
