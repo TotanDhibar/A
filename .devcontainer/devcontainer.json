@@ -1,4 +1,5 @@
-{"name": "Ubuntu 20.04 Codespace",
+{
+  "name": "Ubuntu 20.04 Codespace",
   "build": {
     "dockerfile": "Dockerfile",
     "context": ".."
@@ -13,5 +14,11 @@
     "ms-python.python"
   ],
   "forwardPorts": [],
+  "mounts": [
+    "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent.sock,type=bind"
+  ],
+  "remoteEnv": {
+    "SSH_AUTH_SOCK": "/ssh-agent.sock"
+  },
   "postCreateCommand": "echo \"Welcome to your Ubuntu 20.04 Codespace!\""
 }
