@@ -1,33 +1,30 @@
-# [Choice] Ubuntu version (use ubuntu-22.04 or ubuntu-18.04 on local arm64/Apple Silicon): ubuntu-22.04, ubuntu-20.04, ubuntu-18.04
-ARG VARIANT=ubuntu-20.04
-FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
+# Use the official Ubuntu 20.04 image as the base
+FROM ubuntu:20.04
 
-# [Optional] Uncomment this section to install additional OS packages.
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends \
-    build-essential \
-    curl \
+# Set a non-root user (good practice for security)
+ARG USERNAME=vscode
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+# Create the user and install common dependencies
+RUN apt-get update && apt-get install -y \
+    sudo \
     git \
+    curl \
+    vim \
     gnupg2 \
-    lsb-release \
-    python3-pip \
-    python3-venv \
-    software-properties-common \
-    && rm -rf /var/lib/apt/lists/*
+    openssh-server \
+    # Clean up APT cache to keep the image small
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    # Create the user
+    && groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && echo $USERNAME ALL=(ALL) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# [Optional] Uncomment to setup a non-root user
-# ARG USERNAME=vscode
-# ARG USER_UID=1000
-# ARG USER_GID=$USER_UID
-# RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then \
-#     groupmod --gid $USER_GID $USERNAME \
-#     && usermod --uid $USER_UID --gid $USER_GID $USERNAME \
-#     && chown -R $USER_UID:$USER_GID /home/$USERNAME; \
-#     fi
+# Set the default user
+USER $USERNAME
 
-# [Optional] Uncomment to install additional packages after the main ones
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends \
-#     postgresql-client \
-#     redis-tools \
-#     && rm -rf /var/lib/apt/lists/*
+# Set the working directory
+WORKDIR /home/$USERNAME
