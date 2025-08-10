@@ -1,16 +1,18 @@
 {
-  "name": "Ubuntu 20.04 Dev Container with SSH",
+  "name": "Ubuntu 20.04 Codespace",
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "features": {
-    "ghcr.io/devcontainers/features/sshd:1": {
-      "version": "latest"
+  "remoteUser": "devuser",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ]
     }
   },
-  "postCreateCommand": "sudo service ssh start",
-  "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash"
-  },
-  "extensions": []
+  "mounts": [
+    "source=/workspaces,target=/workspaces,type=bind,consistency=cached"
+  ]
 }
