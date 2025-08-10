@@ -1,7 +1,9 @@
 FROM ubuntu:20.04
 
+# Avoid interactive prompts during apt installs
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Install base packages
 RUN apt-get update && apt-get install -y \
     curl \
     git \
@@ -9,19 +11,27 @@ RUN apt-get update && apt-get install -y \
     sudo \
     openssh-server \
     build-essential \
+    python3 \
+    python3-pip \
+    python3-venv \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Setup OpenSSH
 RUN mkdir /var/run/sshd
 
-# Create default user
+# Create a default non-root user
 RUN useradd -m devuser -s /bin/bash && \
     echo "devuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# Optional: Set a simple password (avoid in public repos)
-RUN echo "devuser:devpassword" | chpasswd
+# Optional: set password via ARG (change it before committing)
+ARG DEV_PASS=devpassword
+RUN echo "devuser:${DEV_PASS}" | chpasswd
 
-EXPOSE 22
+# Set work directory to the Codespaces repo mount point
+WORKDIR /workspaces
 
+# Switch to the non-root user
 USER devuser
-WORKDIR /home/devuser
+
+# Expose SSH port (only useful if you set up port forwarding)
+EXPOSE 22
