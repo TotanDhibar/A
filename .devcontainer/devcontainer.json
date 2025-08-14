@@ -1,5 +1,5 @@
 {
-  "name": "Ubuntu 20.04 Codespace",
+  "name": "Ubuntu 20.04 Codespace with RDP",
   "build": {
     "dockerfile": "Dockerfile"
   },
@@ -14,5 +14,18 @@
   },
   "mounts": [
     "source=/workspaces,target=/workspaces,type=bind,consistency=cached"
-  ]
+  ],
+  "forwardPorts": [22, 3389],
+  "portsAttributes": {
+    "22": {
+      "label": "SSH",
+      "onAutoForward": "notify"
+    },
+    "3389": {
+      "label": "RDP",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "sudo /usr/local/bin/start-services.sh",
+  "overrideCommand": false
 }
